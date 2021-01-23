@@ -1,0 +1,127 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="messaging">
+                    <div class="inbox_msg">
+                        <div class="inbox_people">
+                            <div class="headind_srch">
+                                <div class="recent_heading">
+                                    <h5>Online Users</h5>
+                                </div>
+                            </div>
+                            <div class="inbox_chat">
+                                <div class="chat_list active_chat" *ngFor="let user of onlineUser">
+                                    <a href="javascript:void(0)" (click)="chooseUser(user)">
+                                        <div class="chat_people">
+                                            <div class="chat_ib">
+                                                <h5>
+                                                    {{user.firstName}} {{user.lastName}}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mesgs" *ngIf="chattingWithUser">
+                            <div class="text-left">
+                                <h3>{{chattingWithUser.firstName}} {{chattingWithUser.lastName}}</h3>
+                                <hr />
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="msg_history" #scrollMe [scrollTop]="scrollMe.scrollHeight" *ngIf="chatMessages.length>0">
+                                <div *ngFor="let msg of chatMessages" style="margin-bottom:2px;">
+                                    <div class="incoming_msg" *ngIf="msg.messagestatus == 'received'">
+                                        <div class="received_msg">
+                                            <div class="row">
+                                                <div class="col-md-11">
+                                                    <span class="time_date" style="float: left; margin-left: 25px;">
+                                                        {{msg.senderName}} | {{msg.messagedate | date :  "shortTime"}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin: 20px 0px 20px -30px;">
+                                                <div class="col-md-1" style="padding-right: 0px;">
+                                                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                                                        <mat-icon>more_vert</mat-icon>
+                                                    </button>
+                                                    <mat-menu #menu="matMenu">
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 1)">Delete for me</button>
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 2)">Delete for everyone</button>
+                                                    </mat-menu>
+                                                </div>
+                                                <div class="col-md-11" style="text-align: left;">
+                                                    <span class="msg">
+                                                        {{msg.message}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="outgoing_msg" *ngIf="msg.messagestatus == 'sent'">
+                                        <div class="sent_msg">
+                                            <div class="row">
+                                                <div class="col-md-11">
+                                                    <span class="time_date" style="float: right;">
+                                                        {{msg.senderName}} | {{msg.messagedate | date :  "shortTime"}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin: 20px 0px 20px 0px;">
+                                                <div class="col-md-11" style="text-align: right;padding-right: 0px;">
+                                                    <span class="msg">
+                                                        {{msg.message}}
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-1" style="padding-left: 0px;">
+                                                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                                                        <mat-icon>more_vert</mat-icon>
+                                                    </button>
+                                                    <mat-menu #menu="matMenu">
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 1)">Delete for me</button>
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 2)">Delete for everyone</button>
+                                                    </mat-menu>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
+                                                <div class="col-md-10 msg" >
+                                                    {{msg.message}}
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                                                        <mat-icon>more_vert</mat-icon>
+                                                    </button>
+                                                    <mat-menu #menu="matMenu">
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 1)">Delete for me</button>
+                                                        <button mat-menu-item (click)="deleteMessage(msg.chatid, 2)">Delete for everyone</button>
+                                                    </mat-menu>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="msg_history" *ngIf="chatMessages.length===0">
+                                <p style="font-size:small; color:#dedede; text-align:center">
+                                    No Message Found..
+                                </p>
+                            </div>
+
+                            <div class="type_msg">
+                                <div class="input_msg_write">
+                                    <input type="text" class="write_msg form-control" #msgInput (keydown.enter)="sendMessage(msgInput.value);false;msgInput.value='';" 
+                                           placeholder="Type a message" onfocus="this.placeholder=''" onblur="this.placeholder='Type a message'"/>
+                                    <button class="msg_send_btn" type="button" (click)="sendMessage(msgInput.value);false;msgInput.value='';">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
